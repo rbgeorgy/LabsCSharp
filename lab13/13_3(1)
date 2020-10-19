@@ -1,0 +1,114 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ConsoleApp12
+{
+    public class StackUnderflow : Exception
+    {
+    }
+
+    public class Stack // односвязный список
+    {
+        class Node
+        {
+            public double Value { get; set; }
+            public Node Next { get; set; }
+
+            public Node(double item)
+            {
+                Value = item;
+                Next = null;
+            }
+        }
+
+        Node head = null;
+        int count;
+
+        public void Push(double item)
+        {
+            Node node = new Node(item);
+            node.Next = head;
+            head = node;
+            count++;
+        }
+
+        public double Pop()
+        {
+            if (head == null)
+                throw new StackUnderflow();
+            else if (head.Next == null)
+            {
+                return head.Value;
+                head = null;
+            }
+            else
+            {
+                double tmp = head.Value;
+                head = head.Next;
+                count--;
+                return tmp;
+            }
+        }
+
+        public double Peek()
+        {
+            if (head == null)
+                throw new StackUnderflow();
+            else
+            {
+                return head.Value;
+            }
+        }
+        
+        public bool IsEmpty()
+        {
+            if (head == null)
+                return true;
+            else return false;
+        }
+
+        public void Clear()
+        {
+            while (head != null)
+            {
+                head = head.Next;
+            }
+        }
+        
+        public override string ToString()
+        {
+            if (head == null)
+                throw new StackUnderflow();
+            StringBuilder PrintList = new StringBuilder();
+            Node current = head;
+            while (current != null)
+            {
+                PrintList.Append(current.Value + " ");
+                current = current.Next;
+            }
+
+            return PrintList.ToString();
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Stack stack = new Stack();
+            stack.Push(2134);
+            stack.Push(431);
+            stack.Push(213434);
+            stack.Push(12);
+            stack.Push(4326);
+
+            Console.WriteLine(stack.ToString());
+            Console.WriteLine("удалён " + stack.Pop());
+            Console.WriteLine(stack.ToString());
+            Console.WriteLine(stack.IsEmpty());
+            stack.Clear();
+            Console.WriteLine(stack.IsEmpty());
+        }
+    }
+}

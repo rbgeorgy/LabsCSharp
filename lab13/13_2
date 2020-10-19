@@ -1,0 +1,112 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ConsoleApp12
+{
+/*Написать класс SinglyLinkedList , соответствующий односвязному
+списку. В классе должны быть реализованы следующие методы: Push — вставка
+указанного значения в начало списка, Pop — удаление первого элемента списка
+с возвратом удалённого значения. Также необходимо переопределить унаследо-
+ванный метод ToString для получения представления списка в виде строки.
+Написать метод Last , извлекающий последний элемент списка.
+Написать программу, использующую класс.*/
+
+    public class ListUnderflow : Exception
+    {
+    }
+
+    public class SinglyLinkedList // односвязный список
+    {
+        class Node
+        {
+            public double Value { get; set; }
+            public Node Next { get; set; }
+
+            public Node(double item)
+            {
+                Value = item;
+                Next = null;
+            }
+        }
+
+        Node head = null;
+        Node tail = null;
+        int count;
+
+        public void Push(double item)
+        {
+            Node node = new Node(item);
+            node.Next = head;
+            head = node;
+            if (count == 0)
+                tail = head;
+            count++;
+        }
+
+        public double Pop()
+        {
+            if (head == null)
+                throw new ListUnderflow();
+            else
+            {
+                double tmp = head.Value;
+                head = head.Next;
+                count--;
+                return tmp;
+            }
+        }
+
+        public double Last()
+        {
+            //return count;
+            if (head == null)
+                throw new ListUnderflow();
+            
+            Node current = head;
+            double tmp = current.Value;
+            
+            while (current != null)
+            {
+                tmp = current.Value;
+                current = current.Next;
+            }
+
+            return tmp;
+        }
+
+        public override string ToString()
+        {
+            if (head == null)
+                throw new ListUnderflow();
+            StringBuilder PrintList = new StringBuilder();
+            Node current = head;
+            while (current != null)
+            {
+                PrintList.Append(current.Value + " ");
+                current = current.Next;
+            }
+
+            return PrintList.ToString();
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            SinglyLinkedList list = new SinglyLinkedList();
+            list.Push(2134);
+            list.Push(431);
+            list.Push(213434);
+            list.Push(12);
+            list.Push(4326);
+
+            list.Pop();
+            
+            Console.WriteLine("Последний элемент: " + list.Last());
+
+            Console.WriteLine(list.ToString());
+        }
+    }
+}
